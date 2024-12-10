@@ -1,0 +1,19 @@
+package shell
+
+templ Shell(title string, content templ.Component) {
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link href="/public/output.css" rel="stylesheet"/>
+			<script src="/public/htmx.min.js"></script>
+			<title>{ title }</title>
+		</head>
+		<body>
+			<main>
+				@content
+			</main>
+		</body>
+	</html>
+}

@@ -1,0 +1,18 @@
+version: "2"
+sql:
+- schema: "sqlx/migration"
+  queries: "sqlx/query"
+  engine: "postgresql"
+  gen:
+    go:
+      package: "sqlx"
+      out: "sqlx"
+      sql_package: "postgres"
+      emit_json_tags: true
+      emit_interface: true
+      emit_empty_slices: true
+      emit_prepared_queries: false
+      overrides:
+        - db_type: "timestamptz"
+          go_type: "time.Time"
+
