@@ -47,7 +47,6 @@ func main() {
 	}
 
 	store := sqlx.New(db)
-
 	app := server.New(store)
 	handler := http.TimeoutHandler(app, 5*time.Second, "request timeout")
 	handler = httpio.CORSMiddleware(handler)

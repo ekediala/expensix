@@ -1,6 +1,6 @@
-# Go Web Server Template
+# Expensix
 
-A robust, production-ready Go web server template with built-in PostgreSQL support, ULID-based identifiers, tailwindcss, daisyui, htmx, golang-migrate, and SQLc for type-safe database operations.
+An expense manager app for my family. Supports entering data manually and uploading a receipt.
 
 ## Features
 
@@ -25,11 +25,10 @@ A robust, production-ready Go web server template with built-in PostgreSQL suppo
 ## Project Structure
 
 ```table
-template/
+expensix/
 ├── cmd/                    # Application entrypoints
-│   └── template/          # Main application
+│   └──main.go          # Main application
 ├── server/                 # HTTP server implementation
-├── store/                 # Database operations and business logic
 ├── sqlx/                  # Database utilities and migrations
 │   ├── migration/        # SQL migrations
 │   └── query/           # SQLc queries
@@ -38,7 +37,7 @@ template/
 
 ## Prerequisites
 
-- Go 1.21 or higher
+- Go 1.23 or higher
 - PostgreSQL 14 or higher
 - SQLc
 - Make
@@ -51,35 +50,37 @@ template/
 
    ```bash
    git clone https://github.com/yourusername/template.git
-   cd template
+   cd expensix
    ```
 
-2. Set up your environment variables:
+2. Rename module if you want
+
+3. Set up your environment variables:
 
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
 
-3. Install dependencies:
+4. Install dependencies:
 
    ```bash
    go mod download
    ```
 
-4. Run database migrations:
+5. Run database migrations:
 
    ```bash
    make migrate-up
    ```
 
-5. Generate SQLc code:
+6. Generate SQLc code:
 
    ```bash
    make sqlc
    ```
 
-6. Start the server:
+7. Start the server:
 
    ```bash
    make dev

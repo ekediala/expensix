@@ -2,11 +2,18 @@ package httpio
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
 
 	"github.com/google/uuid"
+)
+
+const (
+	AllowedMethods = "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+	AllowedHeaders = "Content-Type, Authorization"
+	AllowedMaxAge  = "3600"
 )
 
 type TraceKey struct{}
@@ -34,9 +41,9 @@ func LoggingMiddleware(next http.Handler) http.HandlerFunc {
 		rr := &responseRecorder{ResponseWriter: w}
 		next.ServeHTTP(rr, r)
 		slog.InfoContext(r.Context(), "request",
-			"url", r.URL,
+			"url", r.URL.RequestURI(),
 			"method", r.Method,
-			"took", time.Since(start),
+			"took", fmt.Sprintf("%vms", time.Since(start).Milliseconds()),
 			"statusCode", rr.statusCode,
 			"ip", ReadUserIP(r),
 		)
@@ -47,12 +54,12 @@ func CORSMiddleware(next http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Set CORS headers
 		w.Header().Set("Access-Control-Allow-Origin", "") // You might want to make this more restrictive
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		w.Header().Set("Access-Control-Max-Age", "3600")
+		w.Header().Set("Access-Control-Allow-Methods", AllowedMethods)
+		w.Header().Set("Access-Control-Allow-Headers", AllowedHeaders)
+		w.Header().Set("Access-Control-Max-Age", AllowedMaxAge)
 
 		// Handle preflight requests
-		if r.Method == "OPTIONS" {
+		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
