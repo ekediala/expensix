@@ -39,12 +39,12 @@ func Code(code int, next Handler) Handler {
 	}
 }
 
-func HTML(fragment templ.Component, code int, headers ...Header) Handler {
+func HTML(fragment templ.Component, next Handler, headers ...Header) Handler {
 	return func(w http.ResponseWriter, r *http.Request) Handler {
 		for _, h := range headers {
 			w.Header().Set(h.Key, h.Value)
 		}
-		templ.Handler(fragment, templ.WithStatus(code)).ServeHTTP(w, r)
-		return OK
+		templ.Handler(fragment).ServeHTTP(w, r)
+		return next
 	}
 }

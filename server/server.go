@@ -36,6 +36,6 @@ func New(db sqlx.Querier) *Server {
 
 func Landing() httpio.Handler {
 	return func(w http.ResponseWriter, r *http.Request) httpio.Handler {
-		return httpio.HTML(health.Health(), http.StatusOK)
+		return httpio.Code(http.StatusOK, httpio.HTML(health.Health(), httpio.OK))
 	}
 }
